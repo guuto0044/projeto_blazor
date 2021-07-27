@@ -1,0 +1,315 @@
+@page "/PagCliente"
+@using System.Text.RegularExpressions
+@inject IJSRuntime JS;
+
+<h1>Pagina do Cliente</h1>
+<ul class="nav nav-tabs" id="TabPrincipal" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="tablista" data-toggle="tab" href="#Lista" role="tab" aria-controls="home"
+      aria-selected="true">Lista de Clientes</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="tabForm" data-toggle="tab" href="#Formulario" role="tab" aria-controls="profile"
+      aria-selected="false">Cadastrar/Alterar</a>
+  </li>
+</ul>
+
+<div class="tab-content" id="ContentTabLista">
+  <div class="tab-pane fade show active" id="Lista" role="tabpanel" aria-labelledby="home-tab">
+    <table class="table table-stiped">
+      <thead>
+        <tr>
+          <th>
+          </th>
+          <th>
+            ID do Cliente
+          </th>
+          <th>
+            Nome
+          </th>
+          <th>
+            CPF
+          </th>
+          <th>
+            CEP
+          </th>
+          <th>
+            Endereço
+          </th>
+          <th>
+            Cidade
+          </th>
+          <th>
+            UF
+          </th>
+          <th>
+            E-mail
+          </th>
+          <th>
+            Telefone
+          </th>
+          <th>
+            Ativo
+          </th>
+          <th>
+
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (Cliente item in Clientes)
+        {
+          <tr>
+            <td>
+              <button type="button" class="btn btn-primary" @onclick="() => SelecionarCliente(item)">
+                <span class="oi oi-person" aria-hidden="true"></span>
+              </button>
+            </td>
+            <td>@item.id_Cliente</td>
+            <td>@item.nome</td>
+            <td>@item.CPF</td>
+            <td>@item.CEP</td>
+            <td>@item.endereco</td>
+            <td>@item.cidade</td>
+            <td>@item.UF</td>
+            <td>@item.e_mail</td>
+            <td>@item.telefone</td>
+            <td>@item.ativo</td>
+            <td>
+              <button type="button" class="btn btn-danger" @onclick="() => ExcluirCliente(item)">
+                <span class="oi oi-trash" aria-hidden="true"></span>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="tab-pane fade" id="Formulario" role="tabpanel" aria-labelledby="profile-tab">
+    <div class="form-group col-md-6">
+      <label for="nome"><strong>Informe o Nome</strong></label>
+      <input type="text" class="form-control" id="nome" placeholder="Informe o nome" @bind="cliente.nome">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="telefone"><strong>Telefone</strong></label>
+      <input type="text" class="form-control phone_with_ddd" id="inputAddress1" placeholder="Telefone" @bind="cliente.telefone">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputEmail4"><strong>Email</strong></label>
+      <input type="email" class="form-control" id="inputEmail4" placeholder="Email" @bind="cliente.e_mail">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="cpf"><strong>CPF</strong></label>
+      <input id="produto-1-cnpj" class="form-control rounded-form cpf" type="text" placeholder="EX: 000.000.000 - 00"
+        @bind="cliente.CPF">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputAddress"><strong>CEP</strong></label>
+      <input type="text" class="form-control cep" id="cep" placeholder="CEP" @bind="cliente.CEP">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="endereco"><strong>Endereço</strong></label>
+      <input type="text" class="form-control" id="inputAddress1" placeholder="Endereço" @bind="cliente.endereco">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="complemento"><strong>Complemento</strong></label>
+      <input type="text" class="form-control" id="complemento" placeholder="Complemento" @bind="cliente.complemento">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="bairro"><strong>Bairro</strong></label>
+      <input type="text" class="form-control" id="bairro" placeholder="Bairro" @bind=cliente.bairro>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="cidade"><strong>Cidade</strong></label>
+        <input type="text" class="form-control" id="inputCity" @bind="cliente.cidade">
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState"><strong>UF</strong></label>
+      <select id="inputState" class="form-control" @bind="cliente.UF">
+        <option selected disable value="">Selecione...</option>
+        <option value="AC">Acre</option>
+        <option value="AL">Alagoas</option>
+        <option value="AP">Amapá</option>
+        <option value="AM">Amazonas</option>
+        <option value="BA">Bahia</option>
+        <option value="CE">Ceará</option>
+        <option value="DF">Distrito Federal</option>
+        <option value="ES">Espírito Santo</option>
+        <option value="GO">Goiás</option>
+        <option value="MA">Maranhão</option>
+        <option value="MT">Mato Grosso</option>
+        <option value="MS">Mato Grosso do Sul</option>
+        <option value="MG">Minas Gerais</option>
+        <option value="PA">Pará</option>
+        <option value="PB">Paraíba</option>
+        <option value="PR">Paraná</option>
+        <option value="PE">Pernambuco</option>
+        <option value="PI">Piauí</option>
+        <option value="RJ">Rio de Janeiro</option>
+        <option value="RN">Rio Grande do Norte</option>
+        <option value="RS">Rio Grande do Sul</option>
+        <option value="RO">Rondônia</option>
+        <option value="RR">Roraima</option>
+        <option value="SC">Santa Catarina</option>
+        <option value="SP">São Paulo</option>
+        <option value="SE">Sergipe</option>
+        <option value="TO">Tocantins</option>
+      </select>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="flexCheckDefault" @bind="cliente.ativo">
+      <label class="form-check-label" for="flexCheckDefault">
+        Ativo?
+      </label>
+    </div>
+    <div style="text-align: Center;">
+      <input type="button" value="Cadastrar" class="btn btn-primary" @onclick="GravarCliente">
+      <input type="button" value="Cancelar" class="btn btn-warning" @onclick="BotaoCancelar">
+    </div>
+    <br>
+    <div class="alert alert-danger" style="display : @MostraMensagem;">
+      <strong>Atenção!</strong> Campos Obrigatórios : Nome, E-mail, CPF, CEP
+    </div>
+  </div>
+</div>
+<div class="modal" id="ModalExcluir" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Deseja confirmar a exclusão do Cliente ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" @onclick="ConfirmarExclusao">Sim</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" @onclick="CancelarExclusao">Não</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+@code {
+  // CHAMADAS JAVASCRIPT
+  public string MostraMensagem = "none";
+  private IList<Cliente> Clientes = new List<Cliente>();
+
+  private Cliente cliente = new Cliente();
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
+    {
+      JS.InvokeAsync<string>("LoadPage","");
+      StateHasChanged();
+    }
+  }
+
+  private void CarregaClientes()
+  {
+    Clientes = new ClienteDAO().PegarClientes();
+  }
+
+  protected override async Task OnInitializedAsync()
+  {
+    Clientes = new ClienteDAO().PegarClientes();
+  }
+  protected async Task ExcluirCliente(Cliente cli)
+  {
+    JS.InvokeAsync<string>("ShowModal", "ModalExcluir");
+    cliente = cli;
+    //new ClienteDAO().ExcluirCliente(cli);
+    //CarregaClientes();
+  }
+
+  public void ConfirmarExclusao()
+  {
+    if (cliente != null)
+    {
+      new ClienteDAO().ExcluirCliente(cliente);
+      CarregaClientes();
+    }
+    JS.InvokeAsync<string>("HideModal", "ModalExcluir");
+    cliente = new Cliente();
+  }
+
+  public void CancelarExclusao()
+  {
+    cliente = new Cliente();
+    JS.InvokeAsync<string>("HideModal", "ModalExcluir");
+
+  }
+  protected async Task SelecionarCliente(Cliente cli)
+  {
+    cliente = cli;
+    JS.InvokeAsync<string>("ShowTab", "tabForm");
+  }
+  public void GravarCliente()
+  {
+    if (string.IsNullOrEmpty(cliente.nome) ||
+    string.IsNullOrEmpty(cliente.e_mail) ||
+    string.IsNullOrEmpty(cliente.CPF) ||
+    string.IsNullOrEmpty(cliente.CEP))
+    {
+      MostraMensagem = "block";
+    }
+    else
+    {
+      bool Validado = true;
+      // Validar e-mail :
+      if (string.IsNullOrEmpty(cliente.e_mail))
+      {
+        Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+        Match match = regex.Match(cliente.e_mail);
+        if (!match.Success) // = false
+        {
+          JS.InvokeAsync<String>("ShowModal", "ModalCamposObrigatadrios");
+          Validado = false;
+        }
+      }
+      if (Validado)
+      {
+        if (cliente.id_Cliente > 0)
+        {
+          new ClienteDAO().AtualizarCliente(cliente);
+        }
+        else
+        {
+          cliente.data_hora_Entrada = DateTime.Now;
+        }
+      }
+      if (cliente.id_Cliente > 0)
+      {
+        new ClienteDAO().AtualizarCliente(cliente);
+      }
+      else
+      {
+        cliente.data_hora_Entrada = DateTime.Now;
+        new ClienteDAO().InserirCliente(cliente);
+
+      }
+
+      cliente = new Cliente();
+      CarregaClientes();
+      JS.InvokeAsync<string>("ShowTab", "tabLista");
+
+    }
+
+  }
+
+  public void BotaoCancelar()
+  {
+    cliente = new Cliente();
+    JS.InvokeAsync<string>("ShowTab", "tabLista");
+  }
+
+}
